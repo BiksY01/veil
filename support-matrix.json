@@ -6,8 +6,12 @@
   "platforms": {
     "linux": {
       "status": "supported",
-      "artifact": "AppImage",
-      "notes": "First-class. OpenRC, runit, s6, dinit and systemd are all detected, never assumed."
+      "artifact": "static tar.gz",
+      "alternate_artifact": "AppImage",
+      "arch": ["x86_64"],
+      "libc_floor": null,
+      "notes": "First-class. OpenRC, runit, s6, dinit and systemd are all detected, never assumed. The binary is statically linked against musl, so there is no glibc version floor and nothing to install first. It ships as a tar.gz because a tarball is the only web-delivered form that preserves the executable bit — a bare binary always arrives mode 644 and will not start on a double-click. The AppImage carries the same static payload and is offered for people who want a single file.",
+      "arch_notes": "x86_64 only. aarch64 is not built, so it is not claimed."
     },
     "windows": {
       "status": "planned",

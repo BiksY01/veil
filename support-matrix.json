@@ -1,0 +1,46 @@
+{
+  "$comment": "The ONLY declaration of platform support. The app, the website and the README all read this file — if they disagree with it, they are wrong. Never add a row here that the code cannot actually deliver.",
+  "schema_version": 1,
+  "last_updated": "2026-07-28",
+
+  "platforms": {
+    "linux": {
+      "status": "supported",
+      "artifact": "AppImage",
+      "notes": "First-class. OpenRC, runit, s6, dinit and systemd are all detected, never assumed."
+    },
+    "windows": {
+      "status": "planned",
+      "artifact": "single .exe",
+      "notes": "Second target. Every check needs a native implementation — none of the Linux probes translate."
+    },
+    "macos": {
+      "status": "not_supported",
+      "artifact": null,
+      "notes": "Dropped 2026-07-28. Cannot be built, signed or notarised without Apple hardware and a paid developer account."
+    },
+    "android": {
+      "status": "not_supported",
+      "artifact": null,
+      "notes": "Dropped 2026-07-28. Unrooted Android cannot read firewall state, IPv6 routing or the Wi-Fi MAC, which is most of what Veil checks."
+    }
+  },
+
+  "$comment_capability": "full = the check works and is trustworthy. partial = it answers a narrower question than on Linux, and the UI must say which. none = the platform does not permit it; show 'Not applicable here', never a failure.",
+  "checks": [
+    { "id": "dns",   "title": "Encrypted DNS",       "tier": "free", "linux": "full", "windows": "full" },
+    { "id": "vpn",   "title": "VPN tunnel",          "tier": "plus", "linux": "full", "windows": "full" },
+    { "id": "exit",  "title": "Traffic egress",      "tier": "plus", "linux": "full", "windows": "full" },
+    { "id": "fw",    "title": "Firewall",            "tier": "plus", "linux": "full", "windows": "full" },
+    { "id": "ipv6",  "title": "IPv6 leak guard",     "tier": "plus", "linux": "full", "windows": "full" },
+    { "id": "mac",   "title": "MAC randomisation",   "tier": "free", "linux": "full", "windows": "partial" },
+    { "id": "msg",   "title": "Encrypted messaging", "tier": "free", "linux": "full", "windows": "full" },
+    { "id": "disk",  "title": "Disk encryption",     "tier": "plus", "linux": "full", "windows": "full" }
+  ],
+
+  "caveats": {
+    "windows.mac": "Windows exposes the adapter's MAC but not a per-network randomisation policy the way NetworkManager does. Veil can report the current MAC and whether Windows' own random-hardware-addresses setting is on; it cannot report per-SSID behaviour.",
+    "windows.fw": "Reads Windows Defender Firewall profile state. A third-party firewall replacing it will read as 'applied by something else', not as a failure.",
+    "windows.disk": "Reports BitLocker status. An unencrypted machine with a TPM present is still unencrypted — do not soften that."
+  }
+}

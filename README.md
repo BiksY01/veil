@@ -122,8 +122,16 @@ Releases are on the [releases page](https://github.com/BiksY01/veil/releases), w
 sha256sum -c SHA256SUMS --ignore-missing
 ```
 
-Linux ships as an AppImage: one file, `chmod +x`, double-click. It offers to add a
-desktop entry on first run and does nothing without being asked.
+Linux ships as an AppImage: one file, `chmod +x`, double-click. No runtime to install,
+no terminal, nothing to unpack.
+
+```bash
+chmod +x veil-0.2.0-x86_64.AppImage
+./veil-0.2.0-x86_64.AppImage
+```
+
+It opens the dashboard in your browser on `127.0.0.1` and serves it from the binary
+itself. Nothing is uploaded and nothing listens beyond loopback.
 
 ## Security
 

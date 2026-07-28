@@ -4,8 +4,8 @@
 
 **Find out what your machine is telling everyone. Then stop it.**
 
-[![version](https://img.shields.io/badge/version-0.2.0-8b5cf6)](https://github.com/BiksY01/veil/releases)
-[![platforms](https://img.shields.io/badge/platforms-Linux%20%7C%20Windows-8b5cf6)](#what-runs-where)
+[![version](https://img.shields.io/badge/version-0.2.1-5bcefa)](https://github.com/BiksY01/veil/releases)
+[![platforms](https://img.shields.io/badge/platforms-Linux-5bcefa)](#what-runs-where)
 [![no telemetry](https://img.shields.io/badge/telemetry-none-6ee7b7)](#what-veil-does-not-do)
 [![offline licence](https://img.shields.io/badge/licence%20check-offline-6ee7b7)](#free-and-plus)
 
@@ -110,25 +110,38 @@ This section is here because a privacy tool that oversells itself is worse than 
 - **It does not change anything you have not read and agreed to.** No fix is applied
   silently and nothing persists across a reboot unless you switch that on per fix.
 - **It does not collect anything.** No telemetry, no analytics, no crash reports, no
-  unique identifier. Update checks fetch a signed manifest and send nothing.
+  unique identifier, and no update check — the app never calls home. The one time it
+  talks to the internet is the traffic-egress check, which asks a public address-echo
+  service where your traffic appears to come from; that check is the only way to answer
+  the question, and it runs when you run it.
 
 ## Download
 
-Releases are on the [releases page](https://github.com/BiksY01/veil/releases), with a
-`SHA256SUMS` file and a signature for every artifact.
+Releases are on the [releases page](https://github.com/BiksY01/veil/releases) with a
+`SHA256SUMS` file. There is no code signature — no key is published yet, and claiming
+otherwise would be exactly the sort of thing this tool exists to catch.
 
 ```bash
 # check what you downloaded before you run it
 sha256sum -c SHA256SUMS --ignore-missing
 ```
 
-Linux ships as an AppImage: one file, `chmod +x`, double-click. No runtime to install,
-no terminal, nothing to unpack.
+Linux ships as a statically linked binary in a tarball. Nothing to install first: no
+glibc version to match, no libraries to fetch, so it runs the same on Debian, Alpine and
+everything in between.
 
 ```bash
-chmod +x veil-0.2.0-x86_64.AppImage
-./veil-0.2.0-x86_64.AppImage
+tar xzf veil-0.2.1-x86_64-static.tar.gz
+cd veil-0.2.1-x86_64
+./veil
 ```
+
+A tarball rather than a bare binary because a web server cannot mark a file executable —
+every browser saves downloads without permission to run, and extracting an archive is what
+restores it. If your file manager strips it anyway, `chmod +x veil && ./veil`.
+
+An AppImage of the same binary is published alongside it for people who want a single
+file.
 
 It opens the dashboard in your browser on `127.0.0.1` and serves it from the binary
 itself. Nothing is uploaded and nothing listens beyond loopback.
